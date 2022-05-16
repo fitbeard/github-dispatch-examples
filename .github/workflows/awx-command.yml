@@ -107,7 +107,7 @@ jobs:
                           {
                               "title": "Executed by",
                               "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
-                              "short": true
+                              "short": false
                           },
                           {
                               "title": "Command",
@@ -128,7 +128,7 @@ jobs:
           repository: ${{ github.event.inputs.repository }}
           comment-id: ${{ github.event.inputs.comment-id }}
           body: |
-            [Command run output][1]
+            [Successful command run output][1]
 
             [1]: ${{ steps.vars.outputs.run-url }}
           reaction-type: hooray
