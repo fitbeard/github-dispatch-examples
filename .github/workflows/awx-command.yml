@@ -14,6 +14,12 @@ on:
         required: true
       product:
         required: true
+        type: choice
+        options:
+          - all
+          - fruits
+          - apple
+          - orange
       tags:
         required: false
       limit:
@@ -37,35 +43,51 @@ jobs:
         run: |
           echo ${{ github.event.inputs.repository }}
           echo ${{ github.event.inputs.comment-id }}
-          echo ${{ github.event.inputs.test-data }}
           echo ${{ github.event.inputs.product }}
           echo ${{ steps.name.outputs.tags }}
           echo ${{ steps.name.outputs.limit }}
 
-      - name: step1
+      - name: Deploy via AWX1
         if: ${{ (github.event.inputs.product == 'fruits') || (github.event.inputs.product == 'apple') }}
-        run: |
-          echo ${{ github.event.inputs.product }}
-
-      - name: step2
-        if: ${{ (github.event.inputs.product == 'fruits') || (github.event.inputs.product == 'orange') }}
-        run: |
-          echo ${{ github.event.inputs.product }}
+        uses: fitbeard/action-trigger-awx@v1
+        with:
+          tower_url: https://fakehost1
+          tower_token: fakefake1
+          resource_type: job_template
+          resource_name: ansible-job1
+          tags: ${{ steps.name.outputs.tags }}
+          limit: ${{ steps.name.outputs.limit }}
+          monitor: "false"
 
       - name: Deploy via AWX2
         if: ${{ (github.event.inputs.product == 'fruits') || (github.event.inputs.product == 'orange') }}
         uses: fitbeard/action-trigger-awx@v1
         with:
-          tower_url: https://fakehost
-          tower_token: fakefake
+          tower_url: https://fakehost2
+          tower_token: fakefake2
           resource_type: job_template
           resource_name: ansible-job2
           tags: ${{ steps.name.outputs.tags }}
           limit: ${{ steps.name.outputs.limit }}
+          monitor: "false"
 
       - name: Create URL to the run output
+        if: always()
         id: vars
         run: echo ::set-output name=run-url::https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+      - name: Create comment
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.DISPATCH_TEST_PAT }}
+          repository: ${{ github.event.inputs.repository }}
+          comment-id: ${{ github.event.inputs.comment-id }}
+          body: |
+            [Command run output][1]
+
+            [1]: ${{ steps.vars.outputs.run-url }}
+          reaction-type: '-1'
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
