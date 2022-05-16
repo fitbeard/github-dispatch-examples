@@ -33,11 +33,6 @@ jobs:
               }
             ]
 
-      - name: Create URL to the run output
-        if: failure()
-        id: vars
-        run: echo ::set-output name=run-url::https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-
       - name: Edit comment with error message
         if: failure()
         uses: peter-evans/create-or-update-comment@v2
@@ -48,7 +43,7 @@ jobs:
           body: |
             [Failed command run output][1]
 
-            [1]: ${{ steps.vars.outputs.run-url }}
+            [1]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           reaction-type: '-1'
 
       - name: Edit comment with error message
