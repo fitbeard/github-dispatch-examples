@@ -30,7 +30,7 @@ jobs:
                   "repository=${{ github.repository }}",
                   "comment-id=${{ github.event.comment.id }}",
                   "comment-author=${{ github.event.comment.user.login }}",
-                  "comment-body=${{ github.event.comment.body }},
+                  "comment-body=${{ github.event.comment.body }}",
                   "comment-url=${{ github.event.comment.issue_url }}"
                 ]
               }
