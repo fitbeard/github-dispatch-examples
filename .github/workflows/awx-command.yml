@@ -3,6 +3,7 @@ name: awx-command
 on:
   repository_dispatch:
     types: [awx-command]
+
   workflow_dispatch:
     inputs:
       repository:
@@ -18,8 +19,7 @@ on:
 jobs:
   awx:
     runs-on:
-      - self-hosted
-      - bnk
+      - ubuntu-latest
 
     steps:
       - name: Set name output
