@@ -111,12 +111,12 @@ jobs:
                       "fields": [
                           {
                               "title": "Executed by",
-                              "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
+                              "value": "<${{ github.server_url }}/${{ github.event.inputs.comment-author }}|@${{ github.event.inputs.comment-author }}>",
                               "short": false
                           },
                           {
                               "title": "Command",
-                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.limit }}`",
+                              "value": "`${{ github.event.inputs.comment-body }}`",
                               "short": false
                           }
                       ]
@@ -156,12 +156,12 @@ jobs:
                       "fields": [
                           {
                               "title": "Executed by",
-                              "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
+                              "value": "<${{ github.server_url }}/${{ github.event.inputs.comment-author }}|@${{ github.event.inputs.comment-author }}>",
                               "short": false
                           },
                           {
                               "title": "Command",
-                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.limit }}`",
+                              "value": "`${{ github.event.inputs.comment-body }}`",
                               "short": false
                           }
                       ]
