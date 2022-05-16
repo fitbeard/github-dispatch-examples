@@ -43,7 +43,7 @@ jobs:
           echo ${{ steps.name.outputs.limit }}
 
       - name: step1
-        if: ${{ (github.event.inputs.product == 'fruits') && (github.event.inputs.product == 'apple') }}
+        if: ${{ (github.event.inputs.product == 'fruits') }}
         run: |
           echo ${{ github.event.inputs.product }}
 
