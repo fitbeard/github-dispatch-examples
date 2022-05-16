@@ -28,7 +28,10 @@ jobs:
                 "dispatch_type": "workflow",
                 "static_args": [
                   "repository=${{ github.repository }}",
-                  "comment-id=${{ github.event.comment.id }}"
+                  "comment-id=${{ github.event.comment.id }}",
+                  "comment-author=${{ github.event.comment.user.login }}",
+                  "comment-body=${{ github.event.comment.body }},
+                  "comment-url=${{ github.event.comment.issue_url }}"
                 ]
               }
             ]
