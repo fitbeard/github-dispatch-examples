@@ -56,11 +56,12 @@ jobs:
         if: ${{ (github.event.inputs.product == 'fruits') || (github.event.inputs.product == 'orange') }}
         uses: fitbeard/action-trigger-awx@v1
         with:
-          tower_url: fake
+          tower_url: https://fakehost
           tower_token: fakefake
           resource_type: job_template
           resource_name: ansible-job2
           tags: ${{ steps.name.outputs.tags }}
+          limit: ${{ steps.name.outputs.limit }}
 
       - name: Create URL to the run output
         id: vars
