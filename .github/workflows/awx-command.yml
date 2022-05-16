@@ -1,0 +1,41 @@
+name: awx-command
+
+on:
+  repository_dispatch:
+    types: [awx-command]
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'The repository from which the slash command was dispatched'
+        required: true
+      comment-id:
+        description: 'The comment-id of the slash command'
+        required: true
+jobs:
+  awx:
+    runs-on:
+      - self-hosted
+      - bnk
+
+    steps:
+      - name: Output command and arguments
+        run: |
+          echo ${{ github.event.inputs.repository }}
+          echo ${{ github.event.inputs.comment-id }}
+          echo ${{ github.event.inputs.test-data }}
+
+      - name: Create URL to the run output
+        id: vars
+        run: echo ::set-output name=run-url::https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.DISPATCH_TEST_PAT }}
+          repository: ${{ github.event.inputs.repository }}
+          comment-id: ${{ github.event.inputs.comment-id }}
+          body: |
+            [Command run output][1]
+
+            [1]: ${{ steps.vars.outputs.run-url }}
+          reaction-type: hooray
