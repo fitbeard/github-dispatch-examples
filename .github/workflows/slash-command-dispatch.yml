@@ -44,7 +44,7 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH_TEST_PAT }}
           repository: ${{ github.event.inputs.repository }}
-          comment-id: ${{ github.event.inputs.comment-id }}
+          comment-id: ${{ github.event.comment.id }}
           body: |
             [Command failed run output][1]
 
