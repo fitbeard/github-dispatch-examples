@@ -42,6 +42,16 @@ jobs:
           echo ${{ steps.name.outputs.tags }}
           echo ${{ steps.name.outputs.limit }}
 
+      - name: step1
+        if: ${{ (github.event.inputs.product == 'fruits') && (github.event.inputs.product == 'apple') }}
+        run: |
+          echo ${{ github.event.inputs.product }}
+
+      - name: step2
+        if: ${{ (github.event.inputs.product == 'fruits') && (github.event.inputs.product == 'orange') }}
+        run: |
+          echo ${{ github.event.inputs.product }}
+
       - name: Create URL to the run output
         id: vars
         run: echo ::set-output name=run-url::https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
