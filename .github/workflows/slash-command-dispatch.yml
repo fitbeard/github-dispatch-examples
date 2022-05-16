@@ -41,7 +41,7 @@ jobs:
           repository: ${{ github.event.inputs.repository }}
           comment-id: ${{ github.event.comment.id }}
           body: |
-            > ${{ steps.scd.status }}
+            > ${{ steps.scd.outputs.status }}
           reactions: '-1'
 
       - name: Edit comment with error message
