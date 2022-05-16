@@ -2,11 +2,12 @@ name: help-command
 on:
   repository_dispatch:
     types: [help-command]
+
 jobs:
   help:
     runs-on:
-      - self-hosted
-      - bnk
+      - ubuntu-latest
+
     steps:
       - name: Update comment
         uses: peter-evans/create-or-update-comment@v2
