@@ -18,9 +18,6 @@ on:
       comment-body:
         description: 'The comment-body of the slash command'
         required: true
-      comment-url:
-        description: 'The comment-url of the slash command'
-        required: true
       product:
         required: true
         type: choice
@@ -54,7 +51,6 @@ jobs:
           echo ${{ github.event.inputs.comment-id }}
           echo ${{ github.event.inputs.comment-author }}
           echo ${{ github.event.inputs.comment-body }}
-          echo ${{ github.event.inputs.comment-url }}
           echo ${{ github.event.inputs.product }}
           echo ${{ steps.name.outputs.tags }}
           echo ${{ steps.name.outputs.limit }}
@@ -111,12 +107,12 @@ jobs:
                       "fields": [
                           {
                               "title": "Executed by",
-                              "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
+                              "value": "<${{ github.server_url }}/${{ github.event.inputs.comment-author }}|@${{ github.event.inputs.comment-author }}>",
                               "short": false
                           },
                           {
                               "title": "Command",
-                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.limit }}`",
+                              "value": "`${{ github.event.inputs.comment-body }}`",
                               "short": false
                           }
                       ]
@@ -156,12 +152,12 @@ jobs:
                       "fields": [
                           {
                               "title": "Executed by",
-                              "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
+                              "value": "<${{ github.server_url }}/${{ github.event.inputs.comment-author }}|@${{ github.event.inputs.comment-author }}>",
                               "short": false
                           },
                           {
                               "title": "Command",
-                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.limit }}`",
+                              "value": "`${{ github.event.inputs.comment-body }}`",
                               "short": false
                           }
                       ]
