@@ -72,6 +72,49 @@ jobs:
           monitor: "false"
 
       - name: Create comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.DISPATCH_TEST_PAT }}
+          repository: ${{ github.event.inputs.repository }}
+          comment-id: ${{ github.event.inputs.comment-id }}
+          body: |
+            [Successful command run output][1]
+
+            [1]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          reaction-type: hooray
+
+      - name: Post success to a Slack channel
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          channel-id: 'test_osd_notify'
+          payload: |
+            {
+              "attachments": [
+                  {
+                      "fallback": "${{ github.repository }}: ${{ job.status }}",
+                      "title": "${{ github.repository }}",
+                      "title_link": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "color": "good",
+                      "text": "Status: ${{ job.status }}",
+                      "fields": [
+                          {
+                              "title": "Executed by",
+                              "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
+                              "short": false
+                          },
+                          {
+                              "title": "Command",
+                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.limit }}`",
+                              "short": false
+                          }
+                      ]
+                  }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Create comment
         if: failure()
         uses: peter-evans/create-or-update-comment@v2
         with:
@@ -102,12 +145,12 @@ jobs:
                           {
                               "title": "Executed by",
                               "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
-                              "short": true
+                              "short": false
                           },
                           {
                               "title": "Command",
-                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.tags }}`",
-                              "short": true
+                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.limit }}`",
+                              "short": false
                           }
                       ]
                   }
@@ -115,15 +158,3 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v2
-        with:
-          token: ${{ secrets.DISPATCH_TEST_PAT }}
-          repository: ${{ github.event.inputs.repository }}
-          comment-id: ${{ github.event.inputs.comment-id }}
-          body: |
-            [Successful command run output][1]
-
-            [1]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          reaction-type: hooray
