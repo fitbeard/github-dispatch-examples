@@ -84,10 +84,42 @@ jobs:
           repository: ${{ github.event.inputs.repository }}
           comment-id: ${{ github.event.inputs.comment-id }}
           body: |
-            [Command run output][1]
+            [Failed command run output][1]
 
             [1]: ${{ steps.vars.outputs.run-url }}
           reaction-type: '-1'
+
+      - name: Post failed to a Slack channel
+        if: failure()
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          channel-id: 'test_osd_notify'
+          payload: |
+            {
+              "attachments": [
+                  {
+                      "fallback": "${{ github.repository }}: ${{ job.status }}",
+                      "title": "${{ github.repository }}",
+                      "title_link": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "color": "danger",
+                      "text": "Status: ${{ job.status }}",
+                      "fields": [
+                          {
+                              "title": "Executed by",
+                              "value": "<https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>",
+                              "short": true
+                          },
+                          {
+                              "title": "Command",
+                              "value": "`/awx product=${{ github.event.inputs.product }} tags=${{ steps.name.outputs.tags }} limit=${{ steps.name.outputs.tags }}`",
+                              "short": false
+                          }
+                      ]
+                  }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
