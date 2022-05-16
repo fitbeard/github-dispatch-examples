@@ -12,6 +12,15 @@ on:
       comment-id:
         description: 'The comment-id of the slash command'
         required: true
+      comment-author:
+        description: 'The comment-author of the slash command'
+        required: true
+      comment-body:
+        description: 'The comment-body of the slash command'
+        required: true
+      comment-url:
+        description: 'The comment-url of the slash command'
+        required: true
       product:
         required: true
         type: choice
@@ -43,6 +52,9 @@ jobs:
         run: |
           echo ${{ github.event.inputs.repository }}
           echo ${{ github.event.inputs.comment-id }}
+          echo ${{ github.event.inputs.comment-author }}
+          echo ${{ github.event.inputs.comment-body }}
+          echo ${{ github.event.inputs.comment-url }}
           echo ${{ github.event.inputs.product }}
           echo ${{ steps.name.outputs.tags }}
           echo ${{ steps.name.outputs.limit }}
