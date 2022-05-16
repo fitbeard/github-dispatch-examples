@@ -11,6 +11,10 @@ on:
       comment-id:
         description: 'The comment-id of the slash command'
         required: true
+      value1:
+        description: 'The value1 of the slash command'
+        required: false
+
 jobs:
   awx:
     runs-on:
@@ -18,11 +22,18 @@ jobs:
       - bnk
 
     steps:
+      - name: Set name output
+        id: name
+        run: |
+          VALUE1=${{ github.event.inputs.value1 }}
+          echo "::set-output name=value1::${VALUE1:-"Octocat"}"
+
       - name: Output command and arguments
         run: |
           echo ${{ github.event.inputs.repository }}
           echo ${{ github.event.inputs.comment-id }}
           echo ${{ github.event.inputs.test-data }}
+          echo ${{ steps.name.outputs.value1 }}
 
       - name: Create URL to the run output
         id: vars
