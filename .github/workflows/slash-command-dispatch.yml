@@ -34,7 +34,7 @@ jobs:
             ]
 
       - name: Edit comment with error message
-        if: steps.scd.outputs.error-message
+        if: ${{ (steps.scd.outputs.error-message) || (failure()) }}
         uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.DISPATCH_TEST_PAT }}
