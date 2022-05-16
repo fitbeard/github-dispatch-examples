@@ -12,8 +12,11 @@ on:
       comment-id:
         description: 'The comment-id of the slash command'
         required: true
-      value1:
-        description: 'The value1 of the slash command'
+      product:
+        required: true
+      tags:
+        required: false
+      limit:
         required: false
 
 jobs:
@@ -25,15 +28,19 @@ jobs:
       - name: Set name output
         id: name
         run: |
-          VALUE1=${{ github.event.inputs.value1 }}
-          echo "::set-output name=value1::${VALUE1:-"Octocat"}"
+          TAGS=${{ github.event.inputs.tags }}
+          LIMIT=${{ github.event.inputs.limit }}
+          echo "::set-output name=tags::${TAGS:-""}"
+          echo "::set-output name=limit::${LIMIT:-""}"
 
       - name: Output command and arguments
         run: |
           echo ${{ github.event.inputs.repository }}
           echo ${{ github.event.inputs.comment-id }}
           echo ${{ github.event.inputs.test-data }}
-          echo ${{ steps.name.outputs.value1 }}
+          echo ${{ github.event.inputs.product }}
+          echo ${{ steps.name.outputs.tags }}
+          echo ${{ steps.name.outputs.limit }}
 
       - name: Create URL to the run output
         id: vars
