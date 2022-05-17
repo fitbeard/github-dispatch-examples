@@ -16,8 +16,8 @@ jobs:
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           body: |
-            > Command | Description | Examples
+            > Command | Description | Product list | Examples
             > --- | --- | ---
             > /help | This output
-            > /awx [\<args\> ...] | Echos back a list of arguments | product=all<br>product=fruits<br>product=apple<br>product=orange
+            > /awx [\<args\> ...] | Echos back a list of arguments | product=all<br>product=fruits<br>product=apple<br>product=orange | /awx product=orange tags=tuned,prometheus limit=mons<br>/awx product=apple tags=node_exporter
           reaction-type: hooray
