@@ -19,11 +19,13 @@ jobs:
             [
               {
                 "command": "help",
+                "permission": "none",
                 "issue_type": "pull-request",
                 "dispatch_type": "repository"
               },
               {
                 "command": "awx",
+                "permission": "none",
                 "issue_type": "pull-request",
                 "dispatch_type": "workflow",
                 "static_args": [
