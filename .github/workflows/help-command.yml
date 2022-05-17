@@ -17,7 +17,7 @@ jobs:
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           body: |
             > Command | Description | Product list | Examples
-            > --- | --- | ---
+            > --- | --- | --- | ---
             > /help | This output
             > /awx [\<args\> ...] | AWX job launch | product=all<br>product=fruits<br>product=apple<br>product=orange | /awx product=orange tags=tuned,prometheus limit=mons<br>/awx product=apple tags=node_exporter
           reaction-type: hooray
