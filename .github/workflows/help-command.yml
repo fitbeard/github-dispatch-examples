@@ -19,5 +19,5 @@ jobs:
             > Command | Description | Product list | Examples
             > --- | --- | --- | ---
             > /help | This output
-            > /awx [\<args\> ...] | AWX job launch | product=all<br>product=fruits<br>product=apple<br>product=orange | /awx product=orange tags=tuned,prometheus limit=mons<br>/awx product=apple tags=node_exporter
+            > /awx [\<args\> ...] | AWX job launch | product=all<br>product=fruits<br>product=apple<br>product=orange | /awx product=orange tags=tuned,prometheus limit=mons<br><br>/awx product=apple tags=node_exporter
           reaction-type: hooray
